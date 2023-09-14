@@ -31,7 +31,7 @@ export const SignIn = () => {
       });
   };
 
-  if (auth) return <Navigate replace to="/" />;
+  if (auth) return <Link to="/" />;
 
   return (
     <div>
