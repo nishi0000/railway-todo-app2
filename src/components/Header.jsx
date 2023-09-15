@@ -1,6 +1,6 @@
 import React from "react";
 import { useCookies } from "react-cookie";
-import { useSelector, useDispatch } from "react-redux/es/exports";
+import { useSelector, useDispatch } from "react-redux/es/exports"; //Reduxですべてのコンポーネントからアクセス可能なデータを一箇所で一元管理できる
 import { useNavigate } from "react-router-dom";
 import { signOut } from "../authSlice";
 import "./header.scss";

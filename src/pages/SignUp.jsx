@@ -9,38 +9,43 @@ import { url } from "../const";
 import "./signUp.scss";
 
 export const SignUp = () => {
-  const Navigate = useNavigate();
+  const Navigate = useNavigate();//ページ遷移用関数
   const auth = useSelector((state) => state.auth.isSignIn);
   const dispatch = useDispatch();
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
-  const [password, setPassword] = useState("");
-  const [errorMessage, setErrorMessge] = useState();
+  const [email, setEmail] = useState("");//email用state
+  const [name, setName] = useState("");//ユーザーネーム用state
+  const [password, setPassword] = useState("");//パスワード用state
+  const [errorMessage, setErrorMessge] = useState();//エラーメッセージ用state
   const [cookies, setCookie, removeCookie] = useCookies(); // eslint-disable-line no-unused-vars
-  const handleEmailChange = (e) => setEmail(e.target.value);
-  const handleNameChange = (e) => setName(e.target.value);
-  const handlePasswordChange = (e) => setPassword(e.target.value);
-  const onSignUp = () => {
-    const data = {
+  const handleEmailChange = (e) => setEmail(e.target.value);//emailが入力されたら保存
+  const handleNameChange = (e) => setName(e.target.value);//ユーザーネームが入力されたら保存
+  const handlePasswordChange = (e) => setPassword(e.target.value);//パスワードが入力されたら保存
+
+  const onSignUp = () => {//データ登録用の関数
+    const data = {//オブジェクトを作って現在情報をセット
       email: email,
       name: name,
       password: password,
     };
 
+    //urlは"https://qvg1o8w2ef.execute-api.ap-northeast-1.amazonaws.com/"    
+
     axios
-      .post(`${url}/users`, data)
-      .then((res) => {
+      .post(`${url}/users`, data)//ユーザーデータを作成するURLに、dataオブジェクトをpost
+      .then((res) => {//ポストしてからの処理
         const token = res.data.token;
         dispatch(signIn());
         setCookie("token", token);
-        Navigate("/");
+        Navigate("/");//ここでホームに飛んでる
       })
       .catch((err) => {
         setErrorMessge(`サインアップに失敗しました。 ${err}`);
       });
 
-    if (auth) return <Navigate replace to="/" />;
+    if (auth) return <Navigate replace to="/" />;//もしauthがtrueならhomeに飛ばす
   };
+
+
   return (
     <div>
       <Header />
