@@ -13,3 +13,43 @@
   color: #ffffff;
   margin: auto 25px auto auto;
 }
+
+
+
+/* 
+
+//入れ子構造(ネスト)での記述簡略化
+//変数が利用できる
+・メインカラーなどを変数に入れておくことで保守性が上がる
+//ミックスイン(mixin)が利用できる
+・式を変数に入れて呼び出すみたいなことができる
+https://itokoba.com/archives/2332
+上記でメディアクエリの設定するときにすげー便利って書いてある
+// ↓ボタンのスタイルを定義↓
+@mixin button {
+  display: inline-block;
+  width: 300px;
+  max-width: 100%;
+  padding: 20px 10px;
+  border: 2px solid transparent;
+  box-shadow: 0 3px 6px rgba(0,0,0,.16);
+  color: #fff;
+  font-size: 18px;
+  text-align: center;
+  text-decoration: none;
+  transition: .25s;
+}
+// ↑ボタンのスタイルを定義↑
+
+.button01 {
+  background-color: $main-color;
+  @include button; //@includeでボタンのスタイルを呼び出す
+}
+
+.button01 {
+  background-color: $sub-color;
+  @include button; //@includeでボタンのスタイルを呼び出す
+}
+
+
+・命名規則なる変数の名前の付け方があるらしい、要勉強 */
