@@ -24,7 +24,7 @@ export const EditTask = () => {
     const data = {
       title: title,
       detail: detail,
-      limit: limit + ":00Z",
+      limit : limit + ":00Z",
       done: isDone,
     };
 
@@ -92,10 +92,8 @@ export const EditTask = () => {
             value={title}
           />
           <br />
-          <label>期限日時</label>
-          <br />
-          <input type="datetime-local" onChange={handleLimitChange} />
-          <br />
+          <label>期限日時</label><br />
+          <input type="datetime-local" onChange={handleLimitChange} /><br />
           <label>詳細</label>
           <br />
           <textarea

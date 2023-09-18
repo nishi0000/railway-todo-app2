@@ -11,7 +11,7 @@ export const Home = () => {
   const [lists, setLists] = useState([]);
   const [selectListId, setSelectListId] = useState();
   const [tasks, setTasks] = useState([]);
-  // const [loadDate,setLoadDate] = useState("");
+  const [loadDate,setLoadDate] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [cookies] = useCookies();
   const handleIsDoneDisplayChange = (e) => setIsDoneDisplay(e.target.value);
@@ -49,14 +49,7 @@ export const Home = () => {
     }
   }, [lists]);
 
-  // if(tasks.length>0){
-  //   tasks.forEach((task,index) =>{
-  //     const datenow = new Date()
-  //     const limitdate = new Date(task.limit)
-  //     const nokori = limitdate - datenow;
-  //     console.log(`残り${Math.trunc(nokori/24/60/60/1000)}日${Math.trunc(nokori / 60 / 60 / 1000 % 24)}時間${Math.trunc(nokori / 60 / 1000 % 60)}分です`);
-  // });
-  // }
+  console.log(loadDate);
 
   const handleSelectList = (id) => {
     setSelectListId(id);
@@ -144,46 +137,7 @@ const Tasks = (props) => {
           .filter((task) => {
             return task.done === true;
           })
-          .map((task, key) => {
-            return (
-              <li key={key} className="task-item">
-                <Link
-                  to={`/lists/${selectListId}/tasks/${task.id}`}
-                  className="task-item-link"
-                >
-                  {task.title}
-                  <br />
-                  {task.done ? "完了" : "未完了"}
-                </Link>
-              </li>
-            );
-          })}
-      </ul>
-    );
-  }
-
-  return (
-    <ul>
-      {tasks
-        .filter((task) => {
-          return task.done === false;
-        })
-        .map((task, key) => {
-          const limit = new Date(task.limit);
-          const limitDate = limit.getTime();
-          const loadDate = new Date().getTime();
-          const limitTime = limitDate - loadDate;
-          const year = limit.getFullYear();
-          const month = limit.getMonth() + 1;
-          const date = limit.getDate();
-          const hours = limit.getHours();
-          const minutes = limit.getMinutes();
-
-          console.log(loadDate);
-          console.log(limitDate);
-          console.log(year);
-
-          return (
+          .map((task, key) => (
             <li key={key} className="task-item">
               <Link
                 to={`/lists/${selectListId}/tasks/${task.id}`}
@@ -191,18 +145,33 @@ const Tasks = (props) => {
               >
                 {task.title}
                 <br />
-                {`${year}年${month}月${date}日${hours}時${minutes}分までに終わらせましょう！`}
-                <br />
-                {loadDate > limitDate ? <p>期限切れです。</p> : <p>{  `残り時間は${Math.trunc(
-                  limitTime / 24 / 60 / 60 / 1000,
-                )}日${Math.trunc(
-                  (limitTime / 60 / 60 / 1000) % 24,
-                )}時間${Math.trunc((limitTime / 60 / 1000) % 60)}分間です。`}</p>}
                 {task.done ? "完了" : "未完了"}
               </Link>
             </li>
-          );
-        })}
+          ))}
+      </ul>
+    );
+  }
+
+
+  return (
+    <ul>
+      {tasks
+        .filter((task) => {
+          return task.done === false;
+        })
+        .map((task, key) => (
+          <li key={key} className="task-item">
+            <Link
+              to={`/lists/${selectListId}/tasks/${task.id}`}
+              className="task-item-link"
+            >
+              {task.title} 期限{task.limit} 残り期限
+              <br />
+              {task.done ? "完了" : "未完了"}
+            </Link>
+          </li>
+        ))}
     </ul>
   );
 };
