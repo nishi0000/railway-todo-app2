@@ -24,7 +24,7 @@ export const NewTask = () => {
     const data = {
       title: title,
       detail: detail,
-      limit: limit + ":00Z",
+      limit: limit + "Z",
       done: false,
     };
 
@@ -88,7 +88,12 @@ export const NewTask = () => {
           <br />
           <label>期限日時</label>
           <br />
-          <input type="datetime-local" onChange={handleLimitChange}></input>
+          <input
+            type="datetime-local"
+            step="1"
+            className="new-task-limit"
+            onChange={handleLimitChange}
+          ></input>
           <br />
           <label>詳細</label>
           <br />

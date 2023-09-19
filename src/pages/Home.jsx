@@ -11,10 +11,10 @@ export const Home = () => {
   const [lists, setLists] = useState([]);
   const [selectListId, setSelectListId] = useState();
   const [tasks, setTasks] = useState([]);
-  // const [loadDate,setLoadDate] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [cookies] = useCookies();
   const handleIsDoneDisplayChange = (e) => setIsDoneDisplay(e.target.value);
+
   useEffect(() => {
     axios
       .get(`${url}/lists`, {
@@ -49,14 +49,26 @@ export const Home = () => {
     }
   }, [lists]);
 
-  // if(tasks.length>0){
-  //   tasks.forEach((task,index) =>{
-  //     const datenow = new Date()
-  //     const limitdate = new Date(task.limit)
-  //     const nokori = limitdate - datenow;
-  //     console.log(`残り${Math.trunc(nokori/24/60/60/1000)}日${Math.trunc(nokori / 60 / 60 / 1000 % 24)}時間${Math.trunc(nokori / 60 / 1000 % 60)}分です`);
-  // });
-  // }
+  // ***
+  // 参考URLhttps://www.webcreatorbox.com/tech/react-analogue-clock
+
+  // setInterval で作成されたタイマーは、clearInterval 関数が呼び出されるまで実行されます。
+  // useEffect ではクリーンアップのための機能として、コンポーネントが再レンダリングされる直前などに実行したい処理を、
+  // 戻り値として指定できるようです。
+  // ということで、コンポーネントがアンマウントされると、clearInterval を使用してタイマーを停止してみます。
+
+  const [date, setDate] = useState(); // eslint-disable-line no-unused-vars
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setDate(new Date().getTime());
+    }, 1000);
+
+    console.log(date);
+    return () => clearInterval(timer);
+  }, [date]);
+
+  // ***
 
   const handleSelectList = (id) => {
     setSelectListId(id);
@@ -73,10 +85,12 @@ export const Home = () => {
         setErrorMessage(`タスクの取得に失敗しました。${err}`);
       });
   };
+
   return (
     <div>
       <Header />
       <main className="taskList">
+        <p>{date}</p>
         <p className="error-message">{errorMessage}</p>
         <div>
           <div className="list-header">
@@ -164,24 +178,36 @@ const Tasks = (props) => {
 
   return (
     <ul>
-      {tasks
+      {
+      
+      tasks
         .filter((task) => {
           return task.done === false;
         })
         .map((task, key) => {
+          //  もっとスマートな書き方が？
           const limit = new Date(task.limit);
           const limitDate = limit.getTime();
           const loadDate = new Date().getTime();
           const limitTime = limitDate - loadDate;
-          const year = limit.getFullYear();
-          const month = limit.getMonth() + 1;
-          const date = limit.getDate();
-          const hours = limit.getHours();
-          const minutes = limit.getMinutes();
 
-          console.log(loadDate);
-          console.log(limitDate);
-          console.log(year);
+          const time = [
+            limit.getFullYear(),
+            limit.getMonth() + 1,
+            limit.getDate(),
+            limit.getHours(),
+            limit.getMinutes(),
+          ];
+          const [year, month, date, hours, minutes] = time;
+          // const year = limit.getFullYear();
+          // const month = limit.getMonth() + 1;
+          // const date = limit.getDate();
+          // const hours = limit.getHours();
+          // const minutes = limit.getMinutes();
+
+          // console.log(loadDate);
+          // console.log(limitDate);
+          // console.log(year);
 
           return (
             <li key={key} className="task-item">
@@ -192,12 +218,17 @@ const Tasks = (props) => {
                 {task.title}
                 <br />
                 {`${year}年${month}月${date}日${hours}時${minutes}分までに終わらせましょう！`}
-                <br />
-                {loadDate > limitDate ? <p>期限切れです。</p> : <p>{  `残り時間は${Math.trunc(
-                  limitTime / 24 / 60 / 60 / 1000,
-                )}日${Math.trunc(
-                  (limitTime / 60 / 60 / 1000) % 24,
-                )}時間${Math.trunc((limitTime / 60 / 1000) % 60)}分間です。`}</p>}
+                {loadDate > limitDate ? (
+                  <p>期限切れです。</p>
+                ) : (
+                  <p>{`残り時間は${Math.trunc(
+                    limitTime / 24 / 60 / 60 / 1000,
+                  )}日${Math.trunc(
+                    (limitTime / 60 / 60 / 1000) % 24,
+                  )}時間${Math.trunc(
+                    (limitTime / 60 / 1000) % 60,
+                  )}分です。`}</p>
+                )}
                 {task.done ? "完了" : "未完了"}
               </Link>
             </li>
