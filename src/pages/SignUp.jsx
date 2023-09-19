@@ -32,14 +32,11 @@ export const SignUp = () => {
 
     axios
       .post(`${url}/users`, data)
-      // ユーザーデータを作成するURLに、dataオブジェクトをpost
       .then((res) => {
-        // ポストしてからの処理
         const token = res.data.token;
         dispatch(signIn());
         setCookie("token", token);
         Navigate("/");
-        // ここでホームに飛んでる
       })
       .catch((err) => {
         setErrorMessge(`サインアップに失敗しました。 ${err}`);

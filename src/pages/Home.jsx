@@ -179,13 +179,11 @@ const Tasks = (props) => {
   return (
     <ul>
       {
-      
       tasks
         .filter((task) => {
           return task.done === false;
         })
         .map((task, key) => {
-          //  もっとスマートな書き方が？
           const limit = new Date(task.limit);
           const limitDate = limit.getTime();
           const loadDate = new Date().getTime();
