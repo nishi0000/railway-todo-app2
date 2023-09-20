@@ -57,14 +57,14 @@ export const Home = () => {
   // 戻り値として指定できるようです。
   // ということで、コンポーネントがアンマウントされると、clearInterval を使用してタイマーを停止してみます。
 
-  const [date, setDate] = useState(); // eslint-disable-line no-unused-vars
+  const [date, setDate] = useState(); 
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setDate(new Date().getTime());
+      setDate(new Date());
     }, 1000);
 
-    console.log(date);
+    // console.log(date);
     return () => clearInterval(timer);
   }, [date]);
 
@@ -90,7 +90,6 @@ export const Home = () => {
     <div>
       <Header />
       <main className="taskList">
-        <p>{date}</p>
         <p className="error-message">{errorMessage}</p>
         <div>
           <div className="list-header">
@@ -176,18 +175,27 @@ const Tasks = (props) => {
     );
   }
 
+  // https://dotnsf.blog.jp/archives/1078572481.html
+  // https://zenn.dev/saki/articles/cbb097a495fcf5
+  //　https://meetup-jp.toast.com/498
+
   return (
     <ul>
-      {
-      tasks
+      {tasks
         .filter((task) => {
           return task.done === false;
         })
         .map((task, key) => {
-          const limit = new Date(task.limit);
+          const limitFix = new Date(task.limit);
+          const limitConversion = limitFix.toISOString();
+
+          const limit = new Date(limitConversion);
           const limitDate = limit.getTime();
           const loadDate = new Date().getTime();
           const limitTime = limitDate - loadDate;
+          // console.log(test);
+          
+
 
           const time = [
             limit.getFullYear(),
@@ -203,10 +211,6 @@ const Tasks = (props) => {
           // const hours = limit.getHours();
           // const minutes = limit.getMinutes();
 
-          // console.log(loadDate);
-          // console.log(limitDate);
-          // console.log(year);
-
           return (
             <li key={key} className="task-item">
               <Link
@@ -221,7 +225,8 @@ const Tasks = (props) => {
                 ) : (
                   <p>{`残り時間は${Math.trunc(
                     limitTime / 24 / 60 / 60 / 1000,
-                  )}日${Math.trunc(
+                  )}日
+                  ${Math.trunc(
                     (limitTime / 60 / 60 / 1000) % 24,
                   )}時間${Math.trunc(
                     (limitTime / 60 / 1000) % 60,

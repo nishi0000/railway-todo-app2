@@ -24,8 +24,7 @@ export const EditTask = () => {
     const data = {
       title: title,
       detail: detail,
-      limit: limit + "Z", // Zが必要なのはどこを見ればわかるのかな？暗黙の了解？
-      // 最初"：00Z"という文字列を追加してたけど、こういうやり方はあんまりよくない？ブラウザによって表示が違うと見たから、こっちのほうがいい？
+      limit: limit + "Z", // Z? "：00Z"? ISO 8601?
       done: isDone,
     };
 
@@ -70,7 +69,7 @@ export const EditTask = () => {
         const task = res.data;
         setTitle(task.title);
         setDetail(task.detail);
-        setLimit(task.limit.replace("Z", "")); // 何かもっとスマートなやり方が？
+        setLimit(task.limit.replace("Z", "")); // ?
         setIsDone(task.done);
       })
       .catch((err) => {

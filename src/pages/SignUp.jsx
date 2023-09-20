@@ -43,7 +43,6 @@ export const SignUp = () => {
       });
 
     if (auth) return <Navigate replace to="/" />;
-    // もしauthがtrueならhomeに飛ばす
   };
 
   return (
