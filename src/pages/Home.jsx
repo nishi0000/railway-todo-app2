@@ -13,6 +13,7 @@ export const Home = () => {
   const [tasks, setTasks] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [cookies] = useCookies();
+  const [date, setDate] = useState(); // 画面更新用ステート
   const handleIsDoneDisplayChange = (e) => setIsDoneDisplay(e.target.value);
 
   useEffect(() => {
@@ -49,26 +50,13 @@ export const Home = () => {
     }
   }, [lists]);
 
-  // ***
-  // 参考URLhttps://www.webcreatorbox.com/tech/react-analogue-clock
-
-  // setInterval で作成されたタイマーは、clearInterval 関数が呼び出されるまで実行されます。
-  // useEffect ではクリーンアップのための機能として、コンポーネントが再レンダリングされる直前などに実行したい処理を、
-  // 戻り値として指定できるようです。
-  // ということで、コンポーネントがアンマウントされると、clearInterval を使用してタイマーを停止してみます。
-
-  const [date, setDate] = useState(); 
-
   useEffect(() => {
+    // 画面更新用関数
     const timer = setInterval(() => {
       setDate(new Date());
     }, 1000);
-
-    // console.log(date);
     return () => clearInterval(timer);
   }, [date]);
-
-  // ***
 
   const handleSelectList = (id) => {
     setSelectListId(id);
@@ -86,8 +74,73 @@ export const Home = () => {
       });
   };
 
+
+  const [state,setState] = useState({
+    tab: 'panel1',
+  })
+
+  const hantei = (e) => {
+    console.log(e.currentTarget.getAttribute("aria-controls"));
+
+  const element = e.currentTarget;
+
+  // aria-controls 属性の値を取得
+  const tabState = element.getAttribute('aria-controls');
+
+  // プロパティーを更新
+  setState({
+    tab: tabState,
+  });
+  };
+
   return (
-    <div>
+
+      <div class="tabs">
+        <ul role="tablist" aria-label="Sample Tabs">
+          <li role="tab" aria-selected={state.tab === 'panel-1'} aria-controls="panel-1" id="tab-1" tabindex="0" onClick={hantei}>
+            a選択中
+          </li>
+          <li
+            role="tab"
+            aria-controls="panel-2"
+            id="tab-2"
+            tabindex="0"
+            onClick={hantei}
+            aria-selected={state.tab === 'panel-2'}
+          >
+            b
+          </li>
+          <li
+            role="tab"
+            aria-controls="panel-3"
+            id="tab-3"
+            tabindex="0"
+            onClick={hantei}
+            aria-selected={state.tab === 'panel-3'}
+          >
+            c
+          </li>
+        </ul>
+
+    <div role="tabpanel"
+        id="panel-1"
+        aria-hidden={state.tab !== 'panel-1'}>
+    カベルネ・ソーヴィニョンはブドウの一品種。赤ワインの中でも渋くて重い味わいが特徴です。
+  </div>
+  <div role="tabpanel"
+        id="panel-2"
+        aria-hidden={state.tab !== 'panel-2'}>
+    メルローはブドウの一品種。味はカベルネ・ソーヴィニョンほど酸味やタンニンは強くなく、芳醇でまろやかで繊細な味わいです。
+  </div>
+  <div role="tabpanel"
+        id="panel-3"
+        aria-hidden={state.tab !== 'panel-3'}>
+    ピノ・ノワールはブドウの一品種。カベルネ・ソーヴィニョンと対照的で比較的軽口な味わいです。
+  </div>
+
+
+
+
       <Header />
       <main className="taskList">
         <p className="error-message">{errorMessage}</p>
@@ -107,12 +160,13 @@ export const Home = () => {
           </div>
           <ul className="list-tab">
             {lists.map((list, key) => {
-              const isActive = list.id === selectListId;
+              const isActive = list.id === selectListId; // リストIDとセレクトリストIDが一致してたらtrueを返す
               return (
                 <li
                   key={key}
                   className={`list-tab-item ${isActive ? "active" : ""}`}
                   onClick={() => handleSelectList(list.id)}
+                  tabindex="0"
                 >
                   {list.title}
                 </li>
@@ -145,9 +199,15 @@ export const Home = () => {
   );
 };
 
-// 表示するタスク
 const Tasks = (props) => {
   const { tasks, selectListId, isDoneDisplay } = props;
+
+  const dateConversion = (date) => {
+    return new Date(
+      new Date(date).getTime() + new Date(date).getTimezoneOffset() * 60 * 1000
+    );
+  };
+
   if (tasks === null) return <></>;
 
   if (isDoneDisplay === "done") {
@@ -158,6 +218,22 @@ const Tasks = (props) => {
             return task.done === true;
           })
           .map((task, key) => {
+            const limit = dateConversion(task.limit);
+
+            const time = [
+              limit.getFullYear(),
+              limit.getMonth() + 1,
+              limit.getDate(),
+              limit.getHours(),
+              limit.getMinutes(),
+            ];
+            const [year, month, date, hours, minutes] = time;
+
+            tasks.sort(
+              (a, b) =>
+                new Date(b.limit).getTime() - new Date(a.limit).getTime()
+            ); // ソート機能追加
+
             return (
               <li key={key} className="task-item">
                 <Link
@@ -165,6 +241,8 @@ const Tasks = (props) => {
                   className="task-item-link"
                 >
                   {task.title}
+                  <br />
+                  {`タスク完了日時：${year}年${month}月${date}日${hours}時${minutes}分`}
                   <br />
                   {task.done ? "完了" : "未完了"}
                 </Link>
@@ -175,10 +253,6 @@ const Tasks = (props) => {
     );
   }
 
-  // https://dotnsf.blog.jp/archives/1078572481.html
-  // https://zenn.dev/saki/articles/cbb097a495fcf5
-  //　https://meetup-jp.toast.com/498
-
   return (
     <ul>
       {tasks
@@ -186,16 +260,11 @@ const Tasks = (props) => {
           return task.done === false;
         })
         .map((task, key) => {
-          const limitFix = new Date(task.limit);
-          const limitConversion = limitFix.toISOString();
+          const limit = dateConversion(task.limit);
 
-          const limit = new Date(limitConversion);
           const limitDate = limit.getTime();
           const loadDate = new Date().getTime();
           const limitTime = limitDate - loadDate;
-          // console.log(test);
-          
-
 
           const time = [
             limit.getFullYear(),
@@ -205,11 +274,10 @@ const Tasks = (props) => {
             limit.getMinutes(),
           ];
           const [year, month, date, hours, minutes] = time;
-          // const year = limit.getFullYear();
-          // const month = limit.getMonth() + 1;
-          // const date = limit.getDate();
-          // const hours = limit.getHours();
-          // const minutes = limit.getMinutes();
+
+          tasks.sort(
+            (a, b) => new Date(a.limit).getTime() - new Date(b.limit).getTime()
+          ); // ソート機能追加
 
           return (
             <li key={key} className="task-item">
@@ -224,13 +292,13 @@ const Tasks = (props) => {
                   <p>期限切れです。</p>
                 ) : (
                   <p>{`残り時間は${Math.trunc(
-                    limitTime / 24 / 60 / 60 / 1000,
+                    limitTime / 24 / 60 / 60 / 1000
                   )}日
                   ${Math.trunc(
-                    (limitTime / 60 / 60 / 1000) % 24,
+                    (limitTime / 60 / 60 / 1000) % 24
                   )}時間${Math.trunc(
-                    (limitTime / 60 / 1000) % 60,
-                  )}分です。`}</p>
+                    (limitTime / 60 / 1000) % 60
+                  )}分${Math.trunc((limitTime / 1000) % 60)}秒です。`}</p>
                 )}
                 {task.done ? "完了" : "未完了"}
               </Link>

@@ -24,9 +24,15 @@ export const EditTask = () => {
     const data = {
       title: title,
       detail: detail,
-      limit: limit + "Z", // Z? "：00Z"? ISO 8601?
+      limit: limit + "Z",
       done: isDone,
     };
+    if (isDone === true) {
+      console.log("とうるーだよ");
+      data.limit = new Date(
+        new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000,
+      ).toISOString();
+    }
 
     axios
       .put(`${url}/lists/${listId}/tasks/${taskId}`, data, {
@@ -69,7 +75,7 @@ export const EditTask = () => {
         const task = res.data;
         setTitle(task.title);
         setDetail(task.detail);
-        setLimit(task.limit.replace("Z", "")); // ?
+        setLimit(task.limit.replace("Z", ""));
         setIsDone(task.done);
       })
       .catch((err) => {
