@@ -50,7 +50,8 @@ export const Home = () => {
     }
   }, [lists]);
 
-  useEffect(() => {    // 画面更新用関数
+  useEffect(() => {
+    // 画面更新用関数
     const timer = setInterval(() => {
       setDate(new Date());
     }, 1000);
@@ -73,18 +74,73 @@ export const Home = () => {
       });
   };
 
-  const onKeyDownHandleSelectList = (e, id) => {
-    if (e.keyCode === 13) {
-      handleSelectList(id);
-    } else if (e.keyCode === 37) {
-      alert("左だ");
-    } else if (e.keyCode === 39) {
-      alert("右だ");
-    }
+
+  const [state,setState] = useState({
+    tab: 'panel1',
+  })
+
+  const hantei = (e) => {
+    console.log(e.currentTarget.getAttribute("aria-controls"));
+
+  const element = e.currentTarget;
+
+  // aria-controls 属性の値を取得
+  const tabState = element.getAttribute('aria-controls');
+
+  // プロパティーを更新
+  setState({
+    tab: tabState,
+  });
   };
 
   return (
-    <div>
+
+      <div class="tabs">
+        <ul role="tablist" aria-label="Sample Tabs">
+          <li role="tab" aria-selected={state.tab === 'panel-1'} aria-controls="panel-1" id="tab-1" tabindex="0" onClick={hantei}>
+            a選択中
+          </li>
+          <li
+            role="tab"
+            aria-controls="panel-2"
+            id="tab-2"
+            tabindex="0"
+            onClick={hantei}
+            aria-selected={state.tab === 'panel-2'}
+          >
+            b
+          </li>
+          <li
+            role="tab"
+            aria-controls="panel-3"
+            id="tab-3"
+            tabindex="0"
+            onClick={hantei}
+            aria-selected={state.tab === 'panel-3'}
+          >
+            c
+          </li>
+        </ul>
+
+    <div role="tabpanel"
+        id="panel-1"
+        aria-hidden={state.tab !== 'panel-1'}>
+    カベルネ・ソーヴィニョンはブドウの一品種。赤ワインの中でも渋くて重い味わいが特徴です。
+  </div>
+  <div role="tabpanel"
+        id="panel-2"
+        aria-hidden={state.tab !== 'panel-2'}>
+    メルローはブドウの一品種。味はカベルネ・ソーヴィニョンほど酸味やタンニンは強くなく、芳醇でまろやかで繊細な味わいです。
+  </div>
+  <div role="tabpanel"
+        id="panel-3"
+        aria-hidden={state.tab !== 'panel-3'}>
+    ピノ・ノワールはブドウの一品種。カベルネ・ソーヴィニョンと対照的で比較的軽口な味わいです。
+  </div>
+
+
+
+
       <Header />
       <main className="taskList">
         <p className="error-message">{errorMessage}</p>
@@ -104,17 +160,16 @@ export const Home = () => {
           </div>
           <ul className="list-tab" role="tablist">
             {lists.map((list, key) => {
-              const isActive = list.id === selectListId;
+              const isActive = list.id === selectListId; // リストIDとセレクトリストIDが一致してたらtrueを返す
               return (
                 <li
                   key={key}
                   className={`list-tab-item ${isActive ? "active" : ""}`}
                   onClick={() => handleSelectList(list.id)}
-                  onKeyDown={(e) => onKeyDownHandleSelectList(e, list.id)}
                   role="tab"
                   aria-selected={isActive}
                   aria-controls={selectListId}
-                  tabIndex={isActive ? "-1" : "0"}
+                  tabindex="0"
                 >
                   {list.title}
                 </li>
@@ -183,21 +238,14 @@ const Tasks = (props) => {
             ); // ソート機能追加
 
             return (
-              <li
-                key={key}
-                role="tabpanel"
-                id={selectListId}
-                className="task-item"
-              >
+              <li key={key} role="tabpanel" id={selectListId} className="task-item">
                 <Link
                   to={`/lists/${selectListId}/tasks/${task.id}`}
                   className="task-item-link"
                 >
                   {task.title}
                   <br />
-                  {`タスク完了日:${year}/${month}/${date} `}
-                {hours < 10 ? `0${hours}:` : `${hours}:`}
-                {minutes < 10 ? `0${minutes}` : `${minutes}`}
+                  {`タスク完了日時：${year}年${month}月${date}日${hours}時${minutes}分`}
                   <br />
                   {task.done ? "完了" : "未完了"}
                 </Link>
@@ -230,48 +278,30 @@ const Tasks = (props) => {
           ];
           const [year, month, date, hours, minutes] = time;
 
-          const remainingTime = [
-            Math.trunc(limitTime / 24 / 60 / 60 / 1000),
-            Math.trunc((limitTime / 60 / 60 / 1000) % 24),
-            Math.trunc((limitTime / 60 / 1000) % 60),
-            Math.trunc((limitTime / 1000) % 60),
-          ] ;
-
-          const [remainingDate,remainingHours,remainingMinutes,remainingSeconds] = remainingTime;
-
           tasks.sort(
             (a, b) => new Date(a.limit).getTime() - new Date(b.limit).getTime()
           ); // ソート機能追加
 
           return (
-            <li
-              key={key}
-              className="task-item"
-              role="tabpanel"
-              id={selectListId}
-            >
+            <li key={key} className="task-item" role="tabpanel" id={selectListId}>
               <Link
                 to={`/lists/${selectListId}/tasks/${task.id}`}
                 className="task-item-link"
               >
                 {task.title}
                 <br />
-
-                {`達成期限:${year}/${month}/${date} `}
-                {hours < 10 ? `0${hours}:` : `${hours}:`}
-                {minutes < 10 ? `0${minutes}` : `${minutes}`}
-
+                {`${year}年${month}月${date}日${hours}時${minutes}分までに終わらせましょう！`}
                 {loadDate > limitDate ? (
-                  <p>期限切れ</p>
+                  <p>期限切れです。</p>
                 ) : (
-                  <p>{`残り時間:`}
-                  {remainingDate > 0 ? `${remainingDate}日`: ``}
-
-                  {remainingHours > 0 ? `${remainingHours}時間` : ``}
-                  
-                  {remainingMinutes > 0 ? `${remainingMinutes}分`: ``}
-                  
-                  {`${remainingSeconds}秒`}</p>
+                  <p>{`残り時間は${Math.trunc(
+                    limitTime / 24 / 60 / 60 / 1000
+                  )}日
+                  ${Math.trunc(
+                    (limitTime / 60 / 60 / 1000) % 24
+                  )}時間${Math.trunc(
+                    (limitTime / 60 / 1000) % 60
+                  )}分${Math.trunc((limitTime / 1000) % 60)}秒です。`}</p>
                 )}
                 {task.done ? "完了" : "未完了"}
               </Link>

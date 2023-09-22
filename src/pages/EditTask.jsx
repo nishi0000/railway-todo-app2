@@ -19,6 +19,8 @@ export const EditTask = () => {
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleLimitChange = (e) => setLimit(e.target.value);
   const handleIsDoneChange = (e) => setIsDone(e.target.value === "done");
+  let taskIsDone = ""; // タスク完了日用変数
+
   const onUpdateTask = () => {
     console.log(isDone);
     const data = {
@@ -27,8 +29,8 @@ export const EditTask = () => {
       limit: limit + "Z",
       done: isDone,
     };
-    if (isDone === true) {
-      console.log("とうるーだよ");
+
+    if (isDone === true && taskIsDone === false) { // タスク完了日用更新関数
       data.limit = new Date(
         new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000,
       ).toISOString();
@@ -77,6 +79,7 @@ export const EditTask = () => {
         setDetail(task.detail);
         setLimit(task.limit.replace("Z", ""));
         setIsDone(task.done);
+        taskIsDone = isDone;
       })
       .catch((err) => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);

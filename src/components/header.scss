@@ -1,4 +1,6 @@
 @charset "utf-8";
+@import "../_mixin.scss";
+
 
 .header {
   width: 100%;
@@ -7,8 +9,24 @@
   color: #ffffff;
   display: flex;
   justify-content: space-between;
-  button {
-    color: #ffffff;
-    margin: auto 25px auto auto;
+  align-items: center;
+
+  @include tab {
+    h1 {
+      font-size: 24px;
+    }
   }
+
+  @include sp {
+    h1 {
+      font-size: 18px;
+    }
+  }
+
 }
+
+button {
+  color: #ffffff;
+  margin: auto 25px auto auto;
+}
+
