@@ -31,6 +31,9 @@
   overflow-x: auto;
   flex-wrap: wrap;
   gap: 1px;
+  @include sp {
+    display: none;
+  }
 
   // background-color: pink;
 
@@ -52,9 +55,7 @@
   border: solid 1px #242f9b;
   justify-content: center;
   align-items: center;
-    @include sp {
-    display: none;
-  }
+
 }
 .active {
   background-color: #242f9b;
@@ -101,13 +102,17 @@
   width: 100%;
 }
 
-#list-tab-sp{
+.list-tab-sp-container {
   display: none;
 
+}
+
+#list-tab-sp {
   @include sp {
-    display: block;
+    display: flex;
+    width: 95%;
+    font-size: large;
+    margin-top: 24px;
   }
 
-
-  
 }

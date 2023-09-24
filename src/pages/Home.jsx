@@ -117,6 +117,7 @@ export const Home = () => {
               </p>
             </div>
           </div>
+<div className="list-tab-sp-container">
           <select id="list-tab-sp" onChange={()=>{onCheangeHandleSelectList()}}>
           {lists.map((list, key) => {
               return (
@@ -127,7 +128,7 @@ export const Home = () => {
                 </option>
               );
             })}
-          </select>
+          </select></div>
 
           <ul className="list-tab" role="tablist">
             {lists.map((list, key) => {
