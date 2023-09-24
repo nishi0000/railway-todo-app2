@@ -13,7 +13,7 @@ export const Home = () => {
   const [tasks, setTasks] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
   const [cookies] = useCookies();
-  const [date, setDate] = useState(); // 画面更新用ステート
+  const [update, setUpdate] = useState(); // 画面更新用ステート
   const handleIsDoneDisplayChange = (e) => setIsDoneDisplay(e.target.value);
 
   useEffect(() => {
@@ -50,12 +50,13 @@ export const Home = () => {
     }
   }, [lists]);
 
-  useEffect(() => {    // 画面更新用関数
+  useEffect(() => {
+    // 画面更新用関数
     const timer = setInterval(() => {
-      setDate(new Date());
+      setUpdate(new Date());
     }, 1000);
     return () => clearInterval(timer);
-  }, [date]);
+  }, [update]);
 
   const handleSelectList = (id) => {
     setSelectListId(id);
@@ -73,15 +74,28 @@ export const Home = () => {
       });
   };
 
-  const onKeyDownHandleSelectList = (e, id) => {
+  const onKeyDownHandleSelectList = (e, key, id) => {
     if (e.keyCode === 13) {
       handleSelectList(id);
     } else if (e.keyCode === 37) {
-      alert("左だ");
+      if (key === 0) {
+        document.getElementById(`tab${lists.length - 1}`).focus();
+      } else {
+        document.getElementById(`tab${key - 1}`).focus();
+      }
     } else if (e.keyCode === 39) {
-      alert("右だ");
+      if (key === lists.length - 1) {
+        document.getElementById(`tab0`).focus();
+      } else {
+        document.getElementById(`tab${key + 1}`).focus();
+      }
     }
   };
+
+  const onCheangeHandleSelectList = (e) => {
+    console.log(e);
+
+  }
 
   return (
     <div>
@@ -102,22 +116,38 @@ export const Home = () => {
               </p>
             </div>
           </div>
+          <select className="list-tab-sp">
+          {lists.map((list, key) => {
+              return (
+                <option
+                  key={key}
+                  value={list.id}
+                  onChange={onCheangeHandleSelectList(list.id)}
+                > {list.title}
+                </option>
+              );
+            })}
+          </select>
+
           <ul className="list-tab" role="tablist">
             {lists.map((list, key) => {
               const isActive = list.id === selectListId;
               return (
+                <>
+                <option value="{list.title}" id="list-tab-sp"></option>
                 <li
                   key={key}
+                  id={`tab${key}`}
                   className={`list-tab-item ${isActive ? "active" : ""}`}
                   onClick={() => handleSelectList(list.id)}
-                  onKeyDown={(e) => onKeyDownHandleSelectList(e, list.id)}
+                  onKeyDown={(e) => onKeyDownHandleSelectList(e, key, list.id)}
                   role="tab"
                   aria-selected={isActive}
                   aria-controls={selectListId}
                   tabIndex={isActive ? "-1" : "0"}
                 >
                   {list.title}
-                </li>
+                </li></>
               );
             })}
           </ul>
@@ -149,10 +179,9 @@ export const Home = () => {
 
 const Tasks = (props) => {
   const { tasks, selectListId, isDoneDisplay } = props;
-
   const dateConversion = (date) => {
     return new Date(
-      new Date(date).getTime() + new Date(date).getTimezoneOffset() * 60 * 1000
+      new Date(date).getTime() + new Date(date).getTimezoneOffset() * 60 * 1000,
     );
   };
 
@@ -179,7 +208,7 @@ const Tasks = (props) => {
 
             tasks.sort(
               (a, b) =>
-                new Date(b.limit).getTime() - new Date(a.limit).getTime()
+                new Date(b.limit).getTime() - new Date(a.limit).getTime(),
             ); // ソート機能追加
 
             return (
@@ -196,8 +225,8 @@ const Tasks = (props) => {
                   {task.title}
                   <br />
                   {`タスク完了日:${year}/${month}/${date} `}
-                {hours < 10 ? `0${hours}:` : `${hours}:`}
-                {minutes < 10 ? `0${minutes}` : `${minutes}`}
+                  {hours < 10 ? `0${hours}:` : `${hours}:`}
+                  {minutes < 10 ? `0${minutes}` : `${minutes}`}
                   <br />
                   {task.done ? "完了" : "未完了"}
                 </Link>
@@ -235,12 +264,17 @@ const Tasks = (props) => {
             Math.trunc((limitTime / 60 / 60 / 1000) % 24),
             Math.trunc((limitTime / 60 / 1000) % 60),
             Math.trunc((limitTime / 1000) % 60),
-          ] ;
+          ];
 
-          const [remainingDate,remainingHours,remainingMinutes,remainingSeconds] = remainingTime;
+          const [
+            remainingDate,
+            remainingHours,
+            remainingMinutes,
+            remainingSeconds,
+          ] = remainingTime;
 
           tasks.sort(
-            (a, b) => new Date(a.limit).getTime() - new Date(b.limit).getTime()
+            (a, b) => new Date(a.limit).getTime() - new Date(b.limit).getTime(),
           ); // ソート機能追加
 
           return (
@@ -256,22 +290,19 @@ const Tasks = (props) => {
               >
                 {task.title}
                 <br />
-
                 {`達成期限:${year}/${month}/${date} `}
                 {hours < 10 ? `0${hours}:` : `${hours}:`}
                 {minutes < 10 ? `0${minutes}` : `${minutes}`}
-
                 {loadDate > limitDate ? (
                   <p>期限切れ</p>
                 ) : (
-                  <p>{`残り時間:`}
-                  {remainingDate > 0 ? `${remainingDate}日`: ``}
-
-                  {remainingHours > 0 ? `${remainingHours}時間` : ``}
-                  
-                  {remainingMinutes > 0 ? `${remainingMinutes}分`: ``}
-                  
-                  {`${remainingSeconds}秒`}</p>
+                  <p>
+                    {`残り時間:`}
+                    {remainingDate > 0 ? `${remainingDate}日` : ``}
+                    {remainingHours > 0 ? `${remainingHours}時間` : ``}
+                    {remainingMinutes > 0 ? `${remainingMinutes}分` : ``}
+                    {`${remainingSeconds}秒`}
+                  </p>
                 )}
                 {task.done ? "完了" : "未完了"}
               </Link>

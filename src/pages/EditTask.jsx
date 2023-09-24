@@ -19,7 +19,7 @@ export const EditTask = () => {
   const handleDetailChange = (e) => setDetail(e.target.value);
   const handleLimitChange = (e) => setLimit(e.target.value);
   const handleIsDoneChange = (e) => setIsDone(e.target.value === "done");
-  let taskIsDone = ""; // タスク完了日用変数
+  let completedDate = ""; // タスク完了日用変数
 
   const onUpdateTask = () => {
     console.log(isDone);
@@ -30,7 +30,8 @@ export const EditTask = () => {
       done: isDone,
     };
 
-    if (isDone === true && taskIsDone === false) { // タスク完了日用更新関数
+    if (isDone === true && completedDate === false) {
+      // タスク完了日用更新関数
       data.limit = new Date(
         new Date().getTime() - new Date().getTimezoneOffset() * 60 * 1000,
       ).toISOString();
@@ -79,7 +80,7 @@ export const EditTask = () => {
         setDetail(task.detail);
         setLimit(task.limit.replace("Z", ""));
         setIsDone(task.done);
-        taskIsDone = isDone;
+        completedDate = isDone;
       })
       .catch((err) => {
         setErrorMessage(`タスク情報の取得に失敗しました。${err}`);
@@ -121,7 +122,7 @@ export const EditTask = () => {
             value={detail}
           />
           <br />
-          <div>
+          <div className="edit-task-inputbutton-sp">
             <input
               type="radio"
               id="todo"
@@ -141,6 +142,7 @@ export const EditTask = () => {
             />
             完了
           </div>
+          <div className="edit-task-button-sp">
           <button
             type="button"
             className="delete-task-button"
@@ -154,7 +156,7 @@ export const EditTask = () => {
             onClick={onUpdateTask}
           >
             更新
-          </button>
+          </button></div>
         </form>
       </main>
     </div>

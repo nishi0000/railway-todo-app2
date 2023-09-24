@@ -32,7 +32,7 @@ export const Router = () => {
       ) : (
         <Route exact path="/" element={<SignIn />} />
       )}
-      <Route component={<NotFound />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 };

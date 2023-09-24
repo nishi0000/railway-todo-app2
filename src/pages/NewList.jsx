@@ -46,13 +46,15 @@ export const NewList = () => {
             className="new-list-title"
           />
           <br />
-          <button
-            type="button"
-            onClick={onCreateList}
-            className="new-list-button"
-          >
-            作成
-          </button>
+          <div className="new-list-button-container">
+            <button
+              type="button"
+              onClick={onCreateList}
+              className="new-list-button"
+            >
+              作成
+            </button>
+          </div>
         </form>
       </main>
     </div>

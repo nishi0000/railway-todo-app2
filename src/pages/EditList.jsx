@@ -78,7 +78,7 @@ export const EditList = () => {
             value={title}
             onChange={handleTitleChange}
           />
-          <br />
+          <br /><div className="list-button-sp">
           <button
             type="button"
             className="delete-list-button"
@@ -92,7 +92,7 @@ export const EditList = () => {
             onClick={onUpdateList}
           >
             更新
-          </button>
+          </button></div>
         </form>
       </main>
     </div>

@@ -1,22 +1,47 @@
 @charset "utf-8";
+@import "../_mixin.scss";
 
 .new-list {
-  width: 1000px;
+
+  width: 60%;
+  max-width: 500px;
   margin: 0 auto;
-  .new-list-form {
-    color: #555555;
+  @include tab {
+    width: 70%;
   }
-
-  .new-list-title {
-    width: 300px;
-    margin-bottom: 25px;
+  @include sp {
+    width: 98%;
   }
+}
 
-  .new-list-button {
-    background-color: #242f9b;
-    color: #ffffff;
-    width: 80px;
-    height: 40px;
-    border-radius: 5px;
+.new-list-form {
+  color: #555555;
+}
+
+.new-list-title {
+  width: 300px;
+  margin-bottom: 25px;
+  font-size: large;
+  height: 30px;
+  @include tab {
+    width: 98%;
+    max-width: 300px;
+  }
+  @include sp {
+    width: 96%;
+  }
+}
+
+.new-list-button {
+  background-color: #242f9b;
+  color: #ffffff;
+  width: 80px;
+  height: 40px;
+  border-radius: 5px;
+}
+
+@include sp {
+  .new-list-button-container {
+    text-align: center;
   }
 }

@@ -5,7 +5,6 @@ import { useNavigate } from "react-router-dom";
 import { signOut } from "../authSlice";
 import "./header.scss";
 
-
 export const Header = () => {
   const auth = useSelector((state) => state.auth.isSignIn);
   const dispatch = useDispatch();

@@ -57,11 +57,12 @@ export const SignIn = () => {
             onChange={handlePasswordChange}
           />
           <br />
+          <div className="signin-button-sp">
           <button type="button" className="signin-button" onClick={onSignIn}>
             サインイン
-          </button>
-        </form>
-        <Link to="/signup">新規作成</Link>
+          </button></div>
+        </form><div className="signin-button-sp">
+        <Link to="/signup">新規作成</Link></div>
       </main>
     </div>
   );

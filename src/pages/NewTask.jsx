@@ -102,14 +102,14 @@ export const NewTask = () => {
             onChange={handleDetailChange}
             className="new-task-detail"
           />
-          <br />
+          <br /><div className="new-task-button-sp">
           <button
             type="button"
             className="new-task-button"
             onClick={onCreateTask}
           >
             作成
-          </button>
+          </button></div>
         </form>
       </main>
     </div>

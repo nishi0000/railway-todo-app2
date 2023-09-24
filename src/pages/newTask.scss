@@ -1,33 +1,78 @@
 @charset "utf-8";
+@import "../_mixin.scss";
+
 
 .new-task {
-  width: 1000px;
+  width: 60%;
+  max-width: 500px;
   margin: 0 auto;
-
-  .new-task-form {
-    color: #555555;
-    .new-task-select-list,
-    .new-task-title,
-    .new-task-detail {
-      width: 300px;
-      margin-bottom: 25px;
-    }
-    .new-task-detail {
-      height: 200px;
-    }
-    .new-task-button {
-      background-color: #242f9b;
-      color: #ffffff;
-      width: 80px;
-      height: 40px;
-      border-radius: 5px;
-    }
-    .new-task-limit {
-      margin-bottom: 24px;
-    }
+  @include tab {
+    width: 70%;
   }
+  @include sp {
+    width: 80%;
+  }
+}
 
-  .error-message {
-    color: #ff3333;
+.new-task-form {
+  color: #555555;
+}
+
+.new-task-select-list,
+.new-task-title,
+.new-task-detail {
+  width: 400px;
+  margin-bottom: 25px;
+  font-size: large;
+  height: 30px;
+  @include tab {
+    width: 98%;
+  }
+  @include sp {
+    width: 96%;
+  }
+}
+
+.new-task-detail {
+  height: 120px;
+  width: 400px;
+  margin-bottom: 25px;
+  font-size: large;
+  @include tab {
+    width: 98%;
+  }
+  @include sp {
+    width: 96%;
+  }
+}
+
+.new-task-button {
+  background-color: #242f9b;
+  color: #ffffff;
+  width: 80px;
+  height: 40px;
+  border-radius: 5px;
+}
+.new-task-limit {
+  margin-bottom: 24px;
+  width: 400px;
+  margin-bottom: 25px;
+  font-size: large;
+  @include tab {
+    width: 98%;
+  }
+  @include sp {
+    width: 96%;
+  }
+}
+
+.error-message {
+  color: #ff3333;
+}
+
+
+@include sp {
+  .new-task-button-sp {
+    text-align: center;
   }
 }
