@@ -92,9 +92,10 @@ export const Home = () => {
     }
   };
 
-  const onCheangeHandleSelectList = (e) => {
-    console.log(e);
-
+  const onCheangeHandleSelectList = () => {
+    const id = document.getElementById('list-tab-sp').value;
+    console.log(id);
+    handleSelectList(id);
   }
 
   return (
@@ -116,13 +117,12 @@ export const Home = () => {
               </p>
             </div>
           </div>
-          <select className="list-tab-sp">
+          <select id="list-tab-sp" onChange={()=>{onCheangeHandleSelectList()}}>
           {lists.map((list, key) => {
               return (
                 <option
                   key={key}
                   value={list.id}
-                  onChange={onCheangeHandleSelectList(list.id)}
                 > {list.title}
                 </option>
               );
