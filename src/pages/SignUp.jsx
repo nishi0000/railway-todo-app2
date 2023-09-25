@@ -75,10 +75,12 @@ export const SignUp = () => {
             onChange={handlePasswordChange}
             className="password-input"
           />
-          <br /><div className="signup-button-sp">
-          <button type="button" onClick={onSignUp} className="signup-button">
-            作成
-          </button></div>
+          <br />
+          <div className="signup-button-sp">
+            <button type="button" onClick={onSignUp} className="signup-button">
+              作成
+            </button>
+          </div>
         </form>
       </main>
     </div>

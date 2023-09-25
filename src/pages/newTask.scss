@@ -1,7 +1,6 @@
 @charset "utf-8";
 @import "../_mixin.scss";
 
-
 .new-task {
   width: 60%;
   max-width: 500px;
@@ -69,7 +68,6 @@
 .error-message {
   color: #ff3333;
 }
-
 
 @include sp {
   .new-task-button-sp {

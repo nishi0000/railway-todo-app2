@@ -102,14 +102,16 @@ export const NewTask = () => {
             onChange={handleDetailChange}
             className="new-task-detail"
           />
-          <br /><div className="new-task-button-sp">
-          <button
-            type="button"
-            className="new-task-button"
-            onClick={onCreateTask}
-          >
-            作成
-          </button></div>
+          <br />
+          <div className="new-task-button-sp">
+            <button
+              type="button"
+              className="new-task-button"
+              onClick={onCreateTask}
+            >
+              作成
+            </button>
+          </div>
         </form>
       </main>
     </div>

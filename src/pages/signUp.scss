@@ -10,7 +10,6 @@
     max-width: 500px;
   }
   @include sp {
-
     width: 80%;
   }
 }
@@ -43,6 +42,7 @@
 }
 
 @include sp {
-.signup-button-sp {
-  text-align: center;
-}}
+  .signup-button-sp {
+    text-align: center;
+  }
+}

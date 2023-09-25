@@ -1,49 +1,41 @@
 @charset "utf-8";
 @import "../_mixin.scss";
 
-
-
 .taskList {
   margin: 50px auto;
   list-style: none;
   width: 100%;
-
-
 }
-
 
 .list-header {
   display: flex;
   justify-content: space-between;
-
-
-
+  @include sp {
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+  }
 }
 
 .list-menu {
   text-align: right;
   margin-right: 12px;
+  @include sp {
+    text-align: center;
+    margin-top: 8px;
+  }
 }
 
 .list-tab {
   list-style: none;
   display: flex;
   overflow-x: auto;
+  margin: 16px;
   flex-wrap: wrap;
-  gap: 1px;
+  row-gap: 3px;
   @include sp {
     display: none;
   }
-
-  // background-color: pink;
-
-  // @include tab {
-  //   background-color: #ff3333;
-
-  // }
-  // @include sp {
-  //   background-color: aqua;
-  // }
 }
 
 .list-tab-item {
@@ -55,7 +47,6 @@
   border: solid 1px #242f9b;
   justify-content: center;
   align-items: center;
-
 }
 .active {
   background-color: #242f9b;
@@ -69,16 +60,31 @@
 .tasks-header {
   display: flex;
   justify-content: space-between;
+  a {
+    margin-right: 8px;
+  }
+
+  @include sp {
+    display: flex;
+    flex-flow: column;
+    text-align: center;
+    a {
+      margin-top: 8px;
+    }
+  }
 }
 
 .task-item {
   list-style-type: none;
-  // height: 70px;
-  width: calc(100% - 25px);
+  width: calc(100% - 50px);
+  margin: 0 auto;
   background-color: #f5f5f5;
   padding-left: 25px;
   font-size: large;
   border: solid 1px #ffffff;
+  @include sp {
+    font-size: medium;
+  }
 }
 
 .task-item-link {
@@ -96,23 +102,27 @@
 .display-select-wrapper {
   width: 100px;
   margin: 0 0 25px auto;
+  @include sp {
+    margin: 12px auto 12px;
+    select {
+      font-size: large;
+    }
+  }
 }
 
 .display-select {
   width: 100%;
+  margin-right: 8px;
 }
 
 .list-tab-sp-container {
   display: none;
-
-}
-
-#list-tab-sp {
   @include sp {
     display: flex;
-    width: 95%;
-    font-size: large;
-    margin-top: 24px;
+    select {
+      margin: 24px auto 0px;
+      width: 80%;
+      font-size: large;
+    }
   }
-
 }

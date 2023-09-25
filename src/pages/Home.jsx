@@ -93,10 +93,10 @@ export const Home = () => {
   };
 
   const onCheangeHandleSelectList = () => {
-    const id = document.getElementById('list-tab-sp').value;
+    const id = document.getElementById("list-tab-sp").value;
     console.log(id);
     handleSelectList(id);
-  }
+  };
 
   return (
     <div>
@@ -117,38 +117,46 @@ export const Home = () => {
               </p>
             </div>
           </div>
-<div className="list-tab-sp-container">
-          <select id="list-tab-sp" onChange={()=>{onCheangeHandleSelectList()}}>
-          {lists.map((list, key) => {
-              return (
-                <option
-                  key={key}
-                  value={list.id}
-                > {list.title}
-                </option>
-              );
-            })}
-          </select></div>
+          <div className="list-tab-sp-container">
+            <select
+              id="list-tab-sp"
+              onChange={() => {
+                onCheangeHandleSelectList();
+              }}
+            >
+              {lists.map((list, key) => {
+                return (
+                  <option key={key} value={list.id}>
+                    {" "}
+                    {list.title}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
 
           <ul className="list-tab" role="tablist">
             {lists.map((list, key) => {
               const isActive = list.id === selectListId;
               return (
                 <>
-                <option value="{list.title}" id="list-tab-sp"></option>
-                <li
-                  key={key}
-                  id={`tab${key}`}
-                  className={`list-tab-item ${isActive ? "active" : ""}`}
-                  onClick={() => handleSelectList(list.id)}
-                  onKeyDown={(e) => onKeyDownHandleSelectList(e, key, list.id)}
-                  role="tab"
-                  aria-selected={isActive}
-                  aria-controls={selectListId}
-                  tabIndex={isActive ? "-1" : "0"}
-                >
-                  {list.title}
-                </li></>
+                  <option value="{list.title}" id="list-tab-sp"></option>
+                  <li
+                    key={key}
+                    id={`tab${key}`}
+                    className={`list-tab-item ${isActive ? "active" : ""}`}
+                    onClick={() => handleSelectList(list.id)}
+                    onKeyDown={(e) =>
+                      onKeyDownHandleSelectList(e, key, list.id)
+                    }
+                    role="tab"
+                    aria-selected={isActive}
+                    aria-controls={selectListId}
+                    tabIndex={isActive ? "-1" : "0"}
+                  >
+                    {list.title}
+                  </li>
+                </>
               );
             })}
           </ul>

@@ -58,11 +58,14 @@ export const SignIn = () => {
           />
           <br />
           <div className="signin-button-sp">
-          <button type="button" className="signin-button" onClick={onSignIn}>
-            サインイン
-          </button></div>
-        </form><div className="signin-button-sp">
-        <Link to="/signup">新規作成</Link></div>
+            <button type="button" className="signin-button" onClick={onSignIn}>
+              サインイン
+            </button>
+          </div>
+        </form>
+        <div className="signin-button-sp">
+          <Link to="/signup">新規作成</Link>
+        </div>
       </main>
     </div>
   );
