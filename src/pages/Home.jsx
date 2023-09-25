@@ -124,10 +124,9 @@ export const Home = () => {
                 onCheangeHandleSelectList();
               }}
             >
-              {lists.map((list, key) => {
+              {lists.map((list) => {
                 return (
-                  <option key={key} value={list.id}>
-                    {" "}
+                  <option value={list.id} key={list.id}>
                     {list.title}
                   </option>
                 );
@@ -139,8 +138,6 @@ export const Home = () => {
             {lists.map((list, key) => {
               const isActive = list.id === selectListId;
               return (
-                <>
-                  <option value="{list.title}" id="list-tab-sp"></option>
                   <li
                     key={key}
                     id={`tab${key}`}
@@ -156,7 +153,6 @@ export const Home = () => {
                   >
                     {list.title}
                   </li>
-                </>
               );
             })}
           </ul>
@@ -205,7 +201,6 @@ const Tasks = (props) => {
           })
           .map((task, key) => {
             const limit = dateConversion(task.limit);
-
             const time = [
               limit.getFullYear(),
               limit.getMonth() + 1,
