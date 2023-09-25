@@ -184,11 +184,22 @@ export const Home = () => {
 
 const Tasks = (props) => {
   const { tasks, selectListId, isDoneDisplay } = props;
+  
   const dateConversion = (date) => {
     return new Date(
       new Date(date).getTime() + new Date(date).getTimezoneOffset() * 60 * 1000,
     );
   };
+
+  const timeConversion = (limit) => {
+    return [
+      limit.getFullYear(),
+      limit.getMonth() + 1,
+      limit.getDate(),
+      limit.getHours(),
+      limit.getMinutes(),
+    ];
+    } 
 
   if (tasks === null) return <></>;
 
@@ -201,14 +212,8 @@ const Tasks = (props) => {
           })
           .map((task, key) => {
             const limit = dateConversion(task.limit);
-            const time = [
-              limit.getFullYear(),
-              limit.getMonth() + 1,
-              limit.getDate(),
-              limit.getHours(),
-              limit.getMinutes(),
-            ];
-            const [year, month, date, hours, minutes] = time;
+
+            const [year, month, date, hours, minutes] = timeConversion(limit);
 
             tasks.sort(
               (a, b) =>
@@ -241,6 +246,7 @@ const Tasks = (props) => {
     );
   }
 
+
   return (
     <ul>
       {tasks
@@ -254,14 +260,7 @@ const Tasks = (props) => {
           const loadDate = new Date().getTime();
           const limitTime = limitDate - loadDate;
 
-          const time = [
-            limit.getFullYear(),
-            limit.getMonth() + 1,
-            limit.getDate(),
-            limit.getHours(),
-            limit.getMinutes(),
-          ];
-          const [year, month, date, hours, minutes] = time;
+          const [year, month, date, hours, minutes] = timeConversion(limit);
 
           const remainingTime = [
             Math.trunc(limitTime / 24 / 60 / 60 / 1000),
